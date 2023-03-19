@@ -1,10 +1,7 @@
-import { welcome } from '../src'
-import { describe, test, expect, vi } from 'vitest'
+import { isBrowser, isServer } from '../src/exports/node'
+import { describe, expect, test } from 'vitest'
 
-describe('index', () => {
-  test('demo part', () => {
-    console.log = vi.fn()
-    welcome()
-    expect(console.log).toHaveBeenCalledWith('hello world')
-  })
+test('node', () => {
+  expect(isBrowser).toBe(false)
+  expect(isServer).toBe(true)
 })

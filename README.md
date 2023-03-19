@@ -1,18 +1,55 @@
-![whatplatformis](https://realme-ten.vercel.app/api/v1/banner?colorA=7c2d12&colorB=c2410c&textColor=fb923c&title=whatplatformis&subtitle=NEO&desc=build%20lib%20with%20condition%20exports)
+# whatplatformis
 
-[![npm](https://img.shields.io/npm/v/whatplatformis)](https://github.com/JiangWeixian/whatplatformis) [![GitHub](https://img.shields.io/npm/l/whatplatformis)](https://github.com/JiangWeixian/whatplatformis) [![stackblitz](https://img.shields.io/badge/%E2%9A%A1%EF%B8%8Fstackblitz-online-blue)](https://stackblitz.com/github/JiangWeixian/whatplatformis)
+[![npm](https://img.shields.io/npm/v/whatplatformis)](https://github.com/JiangWeixian/whatplatformis) [![GitHub](https://img.shields.io/npm/l/whatplatformis)](https://github.com/JiangWeixian/whatplatformis)
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/github/JiangWeixian/whatplatformis)
+## why this repo
 
-## features
+Thanks to `nodejs` condition exports feature, `isServer` will automatic be `false` in browser side, and be `true` in node side. It's friendly for bundler to make `tree shaking` work. No more runtime `typeof window === 'undefined'` check.
 
-- ⚡ Fast - Build with [`rollup-plugin-esbuild`](https://github.com/egoist/rollup-plugin-esbuild)
-- 📊 Stats - output bag bundlesize
-- 📦 Exclude `dependencies` and `peerDependencies`, and bundle `devDependencies`
-- 💪 Typescript - type safe, support alias path with [`ttypescript`](https://github.com/cevek/ttypescript/tree/master/packages/ttypescript)
-- 🃏 Auto setup package condition exports with [`rollup-plugin-condition-exports`](https://github.com/JiangWeixian/rollup-plugin-condition-exports/tree/master)
-- ✅ Vitest
-- 📦 Publish with `changesets`
+## usage
+
+```ts
+import { isServer, isBrowser } from 'whatplatformis'
+
+// isServer will be false in browser
+// isBrowser will be true in browser
+
+if (isServer) {
+  // code...
+}
+```
+
+Code under `isServer` will be automatic tree shaking in target `browser` bundled codes.
+
+### `rollup`
+
+Build for target `browser`
+
+```js
+// rollup.config.mjs
+module.exports = {
+  input: ["<entries>"],
+  plugins: [
+    // other plugins...
+    resolve({
+      browser: true,
+    }),
+  ]
+}
+```
+
+Build for target `node`
+
+```js
+// rollup.config.mjs
+module.exports = {
+  input: ["<entries>"],
+  plugins: [
+    // other plugins...
+    resolve(),
+  ]
+}
+```
 
 ## install
 

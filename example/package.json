@@ -1,0 +1,10 @@
+{
+  "name": "example",
+  "private": true,
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "whatplatformis": "workspace:*"
+  }
+}
