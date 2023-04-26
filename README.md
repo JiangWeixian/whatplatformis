@@ -4,7 +4,7 @@
 
 ## why this repo
 
-Thanks to `nodejs` condition exports feature, `isServer` will automatic be `false` in browser side, and be `true` in node side. It's friendly for bundler to make `tree shaking` work. No more runtime `typeof window === 'undefined'` check.
+> Thanks to `nodejs` condition exports feature, `isServer` will automatic be `false` in browser side, and be `true` in node side. It's friendly for bundler to make `tree shaking` work. No more runtime `typeof window === 'undefined'` check.
 
 ## usage
 
