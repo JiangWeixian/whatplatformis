@@ -3,6 +3,7 @@
     "target": "es5",
     "module": "esnext",
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "importHelpers": true,
     "esModuleInterop": true,
     "sourceMap": true,

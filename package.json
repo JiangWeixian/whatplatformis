@@ -21,15 +21,12 @@
     "url": "https://twitter.com/jiangweixian"
   },
   "sideEffects": false,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "node": {
-        "require": "./dist/node.cjs",
-        "import": "./dist/node.mjs",
-        "types": "./dist/exports/node.d.ts"
-      },
       "browser": {
         "require": "./dist/browser.cjs",
         "import": "./dist/browser.mjs",
@@ -39,7 +36,17 @@
         "require": "./dist/default.cjs",
         "import": "./dist/default.mjs",
         "types": "./dist/exports/default.d.ts"
+      },
+      "node": {
+        "require": "./dist/node.cjs",
+        "import": "./dist/node.mjs",
+        "types": "./dist/exports/node.d.ts"
       }
+    },
+    "./webpack": {
+      "require": "./dist/webpack.cjs",
+      "import": "./dist/webpack.mjs",
+      "types": "./dist/exports/webpack.d.ts"
     }
   },
   "main": "dist/node.cjs",
@@ -61,7 +68,17 @@
     "lint:fix": "eslint . --fix"
   },
   "lint-staged": {
-    "**/**/*.{js,ts,tsx,vue,json}": ["eslint --fix"]
+    "**/**/*.{js,ts,tsx,vue,json}": [
+      "eslint --fix"
+    ]
+  },
+  "peerDependencies": {
+    "webpack": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "webpack": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@aiou/eslint-config": "0.11.1",
@@ -90,6 +107,14 @@
     "ttypescript": "1.5.13",
     "typescript": "4.4.3",
     "typescript-transform-paths": "3.3.1",
-    "vitest": "0.10.0"
+    "vitest": "0.10.0",
+    "webpack": "^5.88.1"
+  },
+  "typesVersions": {
+    "*": {
+      "webpack": [
+        "dist/exports/webpack.d.ts"
+      ]
+    }
   }
 }
