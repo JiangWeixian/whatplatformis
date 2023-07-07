@@ -6,6 +6,13 @@
 
 Thanks to `nodejs` condition exports feature, `isServer` will automatic be `false` in browser side, and be `true` in node side. It's friendly for bundler to make `tree shaking` work. No more runtime `typeof window === 'undefined'` check.
 
+
+## install
+
+```console
+pnpm i whatplatformis
+```
+
 ## usage
 
 ```ts
@@ -51,11 +58,23 @@ module.exports = {
 }
 ```
 
-## install
+Check [example/rollup](./example/rollup) for more details.
 
-```console
-pnpm i whatplatformis
+### `webpack`
+
+When `splitChunks` is enabled, in `webpack.config.js`, should add plugin into plugin list to make tree shaking work.
+
+```js
+import { WhatPlatformIsPlugin } from 'whatplatformis/webpack'
+{
+  // ...other configs
+  plugins: [
+    new WhatPlatformIsPlugin()
+  ]
+}
 ```
+
+Check [example/webpack](./example/webpack) for more details.
 
 ## development
 
