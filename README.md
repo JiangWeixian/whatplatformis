@@ -9,7 +9,7 @@ Thanks to `nodejs` condition exports feature, `isServer` will automatic be `fals
 ## usage
 
 ```ts
-import { isServer, isBrowser } from 'whatplatformis'
+import { isBrowser, isServer } from 'whatplatformis'
 
 // isServer will be false in browser
 // isBrowser will be true in browser
@@ -28,7 +28,7 @@ Build for target `browser`
 ```js
 // rollup.config.mjs
 module.exports = {
-  input: ["<entries>"],
+  input: ['<entries>'],
   plugins: [
     // other plugins...
     resolve({
@@ -43,7 +43,7 @@ Build for target `node`
 ```js
 // rollup.config.mjs
 module.exports = {
-  input: ["<entries>"],
+  input: ['<entries>'],
   plugins: [
     // other plugins...
     resolve(),

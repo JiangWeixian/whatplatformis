@@ -1,5 +1,6 @@
+import { expect, test } from 'vitest'
+
 import { isBrowser, isServer } from '../src/exports/browser'
-import { describe, expect, test } from 'vitest'
 
 test('browser', () => {
   expect(isBrowser).toBe(true)
