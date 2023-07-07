@@ -3,7 +3,7 @@ import type { Compiler } from 'webpack'
 import { createRequire } from 'module'
 import { dirname, join } from 'node:path'
 
-const PACKAGE_RE = /whatplatformis/
+const PACKAGE_RE = /^whatplatformis/
 const require = createRequire(import.meta.url)
 
 export class WhatPlatformIsPlugin {

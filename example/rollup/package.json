@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "example-rollup",
   "private": true,
   "scripts": {
     "build": "rollup -c",
