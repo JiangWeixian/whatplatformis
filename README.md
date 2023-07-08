@@ -66,6 +66,7 @@ When `splitChunks` is enabled, in `webpack.config.js`, should add plugin into pl
 
 ```js
 import { WhatPlatformIsPlugin } from 'whatplatformis/webpack'
+
 {
   // ...other configs
   plugins: [

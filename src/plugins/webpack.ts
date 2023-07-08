@@ -1,7 +1,9 @@
-import webpack from 'webpack'
-import type { Compiler } from 'webpack'
-import { createRequire } from 'module'
+import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
+
+import webpack from 'webpack'
+
+import type { Compiler } from 'webpack'
 
 const PACKAGE_RE = /^whatplatformis/
 const require = createRequire(import.meta.url)
@@ -17,18 +19,19 @@ export class WhatPlatformIsPlugin {
       resource.request = `whatplatformis?t=${Date.now()}`
     })
   }
+
   apply(compiler: Compiler) {
     this.nmp.apply(compiler)
     const dir = dirname(require.resolve('whatplatformis/package.json'))
     if (compiler.options.target === 'node') {
       compiler.options.resolve.alias = {
         ...compiler.options.resolve.alias,
-        'whatplatformis': join(dir, 'dist/node.mjs')
+        whatplatformis: join(dir, 'dist/node.mjs'),
       }
     } else {
       compiler.options.resolve.alias = {
         ...compiler.options.resolve.alias,
-        'whatplatformis': join(dir, 'dist/browser.mjs')
+        whatplatformis: join(dir, 'dist/browser.mjs'),
       }
     }
   }
