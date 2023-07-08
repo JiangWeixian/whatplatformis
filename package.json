@@ -1,8 +1,11 @@
 {
   "name": "whatplatformis",
   "version": "0.1.0",
-  "license": "MIT",
   "packageManager": "pnpm@7.23.0",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
   "homepage": "https://github.com/JiangWeixian/whatplatformis#readme",
   "repository": {
     "type": "git",
@@ -17,9 +20,16 @@
     "email": "jiangweixian1994@gmail.com",
     "url": "https://twitter.com/jiangweixian"
   },
+  "sideEffects": false,
+  "files": ["dist"],
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "node": {
+        "require": "./dist/node.cjs",
+        "import": "./dist/node.mjs",
+        "types": "./dist/exports/node.d.ts"
+      },
       "browser": {
         "require": "./dist/browser.cjs",
         "import": "./dist/browser.mjs",
@@ -29,28 +39,49 @@
         "require": "./dist/default.cjs",
         "import": "./dist/default.mjs",
         "types": "./dist/exports/default.d.ts"
-      },
-      "node": {
-        "require": "./dist/node.cjs",
-        "import": "./dist/node.mjs",
-        "types": "./dist/exports/node.d.ts"
       }
+    },
+    "./webpack": {
+      "require": "./dist/webpack.cjs",
+      "import": "./dist/webpack.mjs",
+      "types": "./dist/exports/webpack.d.ts"
     }
   },
   "main": "dist/node.cjs",
   "module": "dist/node.mjs",
   "types": "dist/exports/node.d.ts",
-  "files": [
-    "dist"
-  ],
-  "sideEffects": false,
+  "scripts": {
+    "build:lib": "rollup -c --silent",
+    "build:dts": "ttsc",
+    "build": "rimraf dist && run-p build:*",
+    "dev": "rollup -c -w --silent",
+    "bundler:webpack": "pnpm --filter=./example/webpack run build",
+    "bundler:rollup": "pnpm --filter=./example/rollup run build",
+    "test": "run-p bundler:* && vitest",
+    "vitest": "vitest",
+    "pretest": "pnpm run build",
+    "prepublishOnly": "publish-police",
+    "release": "pnpm run build && np --no-cleanup --yolo --no-publish --any-branch",
+    "ci:version": "pnpm changeset version",
+    "ci:publish": "pnpm run build && pnpm changeset publish",
+    "ci:snapshot": "pnpm changeset version --snapshot beta",
+    "ci:prerelease": "pnpm run build && pnpm changeset publish --tag beta",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky install"
+  },
   "lint-staged": {
-    "**/**/*.{js,ts,tsx,vue,json}": [
-      "eslint --fix"
-    ]
+    "**/**/*.{js,ts,tsx,vue,json,md}": ["eslint --fix"]
+  },
+  "peerDependencies": {
+    "webpack": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "webpack": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "@aiou/eslint-config": "0.7.8",
+    "@aiou/eslint-config": "0.11.1",
     "@changesets/cli": "2.21.1",
     "@rollup/plugin-alias": "4.0.3",
     "@rollup/plugin-commonjs": "24.0.1",
@@ -60,6 +91,7 @@
     "esbuild": "^0.17.12",
     "eslint": "8.11.0",
     "esrua": "0.2.1",
+    "fast-glob": "^3.3.0",
     "husky": "7.0.4",
     "jsdom": "^21.1.1",
     "lint-staged": "11.2.6",
@@ -76,24 +108,12 @@
     "ttypescript": "1.5.13",
     "typescript": "4.4.3",
     "typescript-transform-paths": "3.3.1",
-    "vitest": "0.10.0"
+    "vitest": "0.10.0",
+    "webpack": "^5.88.1"
   },
-  "engines": {
-    "node": ">=14"
-  },
-  "scripts": {
-    "build:lib": "rollup -c --silent",
-    "build:dts": "ttsc",
-    "build": "rimraf dist && run-p build:*",
-    "dev": "rollup -c -w --silent",
-    "test": "vitest",
-    "pretest": "pnpm run build",
-    "prepublishOnly": "publish-police",
-    "release": "pnpm run build && np --no-cleanup --yolo --no-publish --any-branch",
-    "ci:version": "pnpm changeset version",
-    "ci:publish": "pnpm run build && pnpm changeset publish",
-    "ci:snapshot": "pnpm changeset version --snapshot beta",
-    "ci:prerelease": "pnpm run build && pnpm changeset publish --tag beta",
-    "lint:fix": "eslint . --fix"
+  "typesVersions": {
+    "*": {
+      "webpack": ["dist/exports/webpack.d.ts"]
+    }
   }
 }
