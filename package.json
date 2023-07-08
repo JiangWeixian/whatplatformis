@@ -21,12 +21,15 @@
     "url": "https://twitter.com/jiangweixian"
   },
   "sideEffects": false,
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "node": {
+        "require": "./dist/node.cjs",
+        "import": "./dist/node.mjs",
+        "types": "./dist/exports/node.d.ts"
+      },
       "browser": {
         "require": "./dist/browser.cjs",
         "import": "./dist/browser.mjs",
@@ -36,11 +39,6 @@
         "require": "./dist/default.cjs",
         "import": "./dist/default.mjs",
         "types": "./dist/exports/default.d.ts"
-      },
-      "node": {
-        "require": "./dist/node.cjs",
-        "import": "./dist/node.mjs",
-        "types": "./dist/exports/node.d.ts"
       }
     },
     "./webpack": {
@@ -68,12 +66,11 @@
     "ci:publish": "pnpm run build && pnpm changeset publish",
     "ci:snapshot": "pnpm changeset version --snapshot beta",
     "ci:prerelease": "pnpm run build && pnpm changeset publish --tag beta",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky install"
   },
   "lint-staged": {
-    "**/**/*.{js,ts,tsx,vue,json}": [
-      "eslint --fix"
-    ]
+    "**/**/*.{js,ts,tsx,vue,json,md}": ["eslint --fix"]
   },
   "peerDependencies": {
     "webpack": ">=5"
@@ -116,9 +113,7 @@
   },
   "typesVersions": {
     "*": {
-      "webpack": [
-        "dist/exports/webpack.d.ts"
-      ]
+      "webpack": ["dist/exports/webpack.d.ts"]
     }
   }
 }
