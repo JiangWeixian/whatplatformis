@@ -1,5 +1,12 @@
 # whatplatformis
 
+## 0.2.0
+
+### Minor Changes
+
+- 8cf2e13: support webpack splitchunks treeshaking
+- 8cf2e13: deprecate node14
+
 ## 0.1.0
 
 ### Minor Changes
