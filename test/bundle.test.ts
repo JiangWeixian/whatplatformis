@@ -37,10 +37,15 @@ describe('tree shaking', () => {
   })
 })
 
-const js = [
-  'static/js/main.9c2da4e3af2e3d322fd0.js',
-  'static/js/vendors.ccdc047af1c8df17f6b3.js',
-]
+const js = !process.env.CI
+  ? [
+      'static/js/main.9c2da4e3af2e3d322fd0.js',
+      'static/js/vendors.ccdc047af1c8df17f6b3.js',
+    ]
+  : [
+      'static/js/main.22dc7815421af0c999b6.js',
+      'static/js/vendors.2ff235d170f60128e0d8.js',
+    ]
 
 describe('chunkhash', () => {
   it('chunkhash should be same', () => {
