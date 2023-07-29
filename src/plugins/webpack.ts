@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 
@@ -11,12 +12,17 @@ const require = createRequire(import.meta.url)
 export class WhatPlatformIsPlugin {
   nmp: webpack.NormalModuleReplacementPlugin
   constructor() {
+    const crypto = createHash('sha256')
     this.nmp = new webpack.NormalModuleReplacementPlugin(PACKAGE_RE, (resource) => {
       if (resource.request.includes('?t')) {
         return
       }
+      // Use which file import "whatplatformis" as uniq id
+      // Make sure chunkhash is keeping same
+      const issuer = resource.contextInfo.issuer ?? Date.now().toString()
+      const hash = crypto.update(issuer)
       // whatplatformis always is uniq package againts webpack common chunks rules
-      resource.request = `whatplatformis?t=${Date.now()}`
+      resource.request = `whatplatformis?t=${hash}`
     })
   }
 
