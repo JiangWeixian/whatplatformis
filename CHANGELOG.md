@@ -1,5 +1,11 @@
 # whatplatformis
 
+## 0.2.1
+
+### Patch Changes
+
+- c43fd28: chunkhash changed each time
+
 ## 0.2.0
 
 ### Minor Changes
