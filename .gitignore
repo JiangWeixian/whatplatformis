@@ -161,3 +161,4 @@ dist
 
 # rust
 target
+swc_plugin_whatplatformis.wasm
