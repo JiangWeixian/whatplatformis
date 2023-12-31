@@ -60,9 +60,72 @@ module.exports = {
 
 Check [example/rollup](./example/rollup) for more details.
 
-### `webpack`
+### swc
 
-When `splitChunks` is enabled, in `webpack.config.js`, should add plugin into plugin list to make tree shaking work.
+```console
+pnpm i swc-plugin-whatplatformis
+```
+
+add this plugin in `.swcrc` or `swc-loader` options
+
+```json
+{
+  "jsc": {
+    "experimental": {
+      "plugins": [
+        ["swc-plugin-whatplatformis", { "target": "server", "packages": ["whatplatformis"] }]
+      ]
+    }
+  }
+}
+```
+
+will replace `isServer` or `isBrowser` into bool. e.g. when target is `server`
+
+```ts
+// before
+import { isServer, isBrowser } from "whatplatformis"
+
+if (isServer) {
+  console.log("isServer")
+}
+
+const target = isBrowser
+
+// after
+import { isServer, isBrowser } from "whatplatformis"
+
+if (true) {
+  console.log("isServer")
+}
+
+const target = false
+```
+
+`options.target`
+
+- `type: "server" | "browser"`
+
+Control replace `isBrowser | isServer` into `false | true`
+
+`options.packages`
+
+- `type: string[]`
+
+Sometimes you maintain similar packages like `whatplatformis`, e.g. `is-server`, you can defined extra packages
+
+```json
+{ "target": "server", "packages": ["whatplatformis", "is-server"] }
+```
+
+Plugin will also replace `isServer` and `isBrowser` from packages `whatplatformis` and `is-server`
+
+
+## `FAQ`
+
+**failed when `webpack.splitChunks` enabled**
+
+When `splitChunks` is enabled in `webpack`, `whatplatformis` maybe bundled into common chunks, should add plugin into plugin list to make tree shaking work.
 
 ```js
 import { WhatPlatformIsPlugin } from 'whatplatformis/webpack'
@@ -74,6 +137,8 @@ import { WhatPlatformIsPlugin } from 'whatplatformis/webpack'
   ]
 }
 ```
+
+or use `swc-plugin-whatplatformis` if in `swc` world.
 
 Check [example/webpack](./example/webpack) for more details.
 
