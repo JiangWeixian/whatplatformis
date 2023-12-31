@@ -3,6 +3,7 @@
   "version": "2.2.0",
   "description": "React template",
   "license": "MIT",
+  "private": true,
   "homepage": "https://github.com/spring-catponents/react-template#readme",
   "repository": {
     "type": "git",
