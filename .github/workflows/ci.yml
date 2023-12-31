@@ -12,26 +12,21 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
-
       - name: Install nightly toolchain
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: nightly
           components: rustfmt, clippy
-
       - name: Run cargo check
         run:
           cargo check --all --all-targets
-
       - name: Run cargo clippy
         run:
           cargo clippy --all --all-targets -- -D warnings
-
       - name: Run cargo fmt
         run:
           cargo fmt --all -- --check
-
       - uses: Swatinem/rust-cache@v1
 
   rust-test:
@@ -63,11 +58,9 @@ jobs:
   npm-test:
     runs-on: ubuntu-latest
     name: NPM Test
-
     strategy:
       matrix:
         node-version: [16.x, 18.x]
-
     steps:
       - name: checkout code repository
         uses: actions/checkout@v2
@@ -82,6 +75,14 @@ jobs:
         id: pnpm-install
         with:
           run_install: false
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+      - name: Install wasm target
+        shell: bash
+        run: |
+          rustup target add wasm32-wasi
       - name: get pnpm store directory
         id: pnpm-cache
         shell: bash
