@@ -1,4 +1,5 @@
 import { isBrowser } from 'is-server'
+import { isServer } from 'whatplatformis'
 
 if (false) {
   console.log(1)

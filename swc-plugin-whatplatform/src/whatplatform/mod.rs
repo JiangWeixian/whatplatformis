@@ -55,24 +55,20 @@ impl Fold for WhatPlatform {
     fn fold_ident(&mut self, n: Ident) -> Ident {
         if let Some(is_server) = &self.is_server_ident {
             if &n.to_id() == is_server {
-                let mut server = "true";
-                if &self.target == "server" {
-                    server = "true"
-                } else {
-                    server = "false"
-                }
+                let server = match self.target.as_str() {
+                    "server" => "true",
+                    _ => "false"
+                };
                 debug!("target: {:#?}", server);
                 return Ident::new(server.into(), n.span);
             }
         }
         if let Some(is_browser) = &self.is_browser_ident {
             if &n.to_id() == is_browser {
-                let mut browser = "true";
-                if &self.target == "browser" {
-                    browser = "true"
-                } else {
-                    browser = "false"
-                }
+                let browser = match self.target.as_str() {
+                    "browser" => "true",
+                    _ => "false"
+                };
                 debug!("target: {:#?}", browser);
                 return Ident::new(browser.into(), n.span);
             }
