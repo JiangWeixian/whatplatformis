@@ -13,30 +13,39 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: Install stable toolchain
+      - name: Install nightly toolchain
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-
-      - uses: Swatinem/rust-cache@v1
+          toolchain: nightly
+          components: rustfmt, clippy
 
       - name: Run cargo check
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
+        run:
+          cargo check --all --all-targets
+
+      - name: Run cargo clippy
+        run:
+          cargo clippy --all --all-targets -- -D warnings
+
+      - name: Run cargo fmt
+        run:
+          cargo fmt --all -- --check
+
+      - uses: Swatinem/rust-cache@v1
 
   rust-test:
     name: Rust Test
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        rust: [stable]
+        rust: [nightly]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: Install stable toolchain
+      - name: Install nightly toolchain
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -46,32 +55,9 @@ jobs:
       - uses: Swatinem/rust-cache@v1
 
       - name: Run cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
+        run:
+          cargo test
 
-  lints:
-    name: Lints
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          components: rustfmt, clippy
-
-      - uses: Swatinem/rust-cache@v1
-
-      - name: Run cargo clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
   npm-test:
     runs-on: ubuntu-latest
     name: NPM Test
