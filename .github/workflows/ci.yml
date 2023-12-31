@@ -51,9 +51,11 @@ jobs:
           profile: minimal
           toolchain: ${{ matrix.rust }}
           override: true
-
+      - name: install wasm target
+        shell: bash
+        run: |
+          rustup target add wasm32-wasi
       - uses: Swatinem/rust-cache@v1
-
       - name: Run cargo test
         run:
           cargo test
