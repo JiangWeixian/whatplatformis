@@ -1,5 +1,3 @@
-import { isServer, isBrowser } from "whatplatformis"
-
 if (true) {
   console.log(1)
 }

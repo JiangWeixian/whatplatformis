@@ -106,10 +106,10 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: Install 
+      - name: Install
         run: |
           pnpm install --frozen-lockfile=false
-      - name: Build 
+      - name: Build
         run: |
           pnpm build
       - name: Test

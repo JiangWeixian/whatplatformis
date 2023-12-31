@@ -1,4 +1,4 @@
-import { isServer, isBrowser } from "is-server"
+import { isBrowser, isServer } from 'is-server'
 
 if (isServer) {
   console.log(1)

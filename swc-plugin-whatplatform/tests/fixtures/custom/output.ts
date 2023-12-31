@@ -1,5 +1,3 @@
-import { isServer, isBrowser } from "is-server"
-
 if (false) {
   console.log(1)
 }
