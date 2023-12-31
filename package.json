@@ -71,7 +71,8 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "**/**/*.{js,ts,tsx,vue,json,md}": ["eslint --fix"]
+    "**/**/*.{js,ts,tsx,vue,json,md}": ["eslint --fix"],
+    "**/**/*.rs": ["cargo fmt --all --"]
   },
   "peerDependencies": {
     "webpack": ">=5"

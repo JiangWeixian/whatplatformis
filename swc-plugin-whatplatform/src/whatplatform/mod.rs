@@ -57,7 +57,7 @@ impl Fold for WhatPlatform {
             if &n.to_id() == is_server {
                 let server = match self.target.as_str() {
                     "server" => "true",
-                    _ => "false"
+                    _ => "false",
                 };
                 debug!("target: {:#?}", server);
                 return Ident::new(server.into(), n.span);
@@ -67,7 +67,7 @@ impl Fold for WhatPlatform {
             if &n.to_id() == is_browser {
                 let browser = match self.target.as_str() {
                     "browser" => "true",
-                    _ => "false"
+                    _ => "false",
                 };
                 debug!("target: {:#?}", browser);
                 return Ident::new(browser.into(), n.span);
