@@ -9,12 +9,12 @@ pub struct WhatPlatform {
     is_server_ident: Option<Id>,
     is_browser_ident: Option<Id>,
     target: String,
-    packages: Vec<String>
+    packages: Vec<String>,
 }
 
 pub struct WhatPlatformConfig {
     pub target: String,
-    pub packages: Vec<String>
+    pub packages: Vec<String>,
 }
 
 impl Fold for WhatPlatform {
@@ -62,7 +62,7 @@ impl Fold for WhatPlatform {
                     server = "false"
                 }
                 debug!("target: {:#?}", server);
-                return Ident::new(server.into() , n.span);
+                return Ident::new(server.into(), n.span);
             }
         }
         if let Some(is_browser) = &self.is_browser_ident {
@@ -74,8 +74,8 @@ impl Fold for WhatPlatform {
                     browser = "false"
                 }
                 debug!("target: {:#?}", browser);
-                return Ident::new(browser.into() , n.span);
-            } 
+                return Ident::new(browser.into(), n.span);
+            }
         }
         n
     }

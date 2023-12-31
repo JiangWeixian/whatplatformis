@@ -1,11 +1,11 @@
 pub mod whatplatform;
 
+use serde::Deserialize;
 use swc_core::ecma::{ast::Program, visit::FoldWith};
 use swc_core::plugin::{plugin_transform, proxies::TransformPluginProgramMetadata};
-use serde::Deserialize;
 use whatplatform::{whatplatform, WhatPlatformConfig};
 
-fn default_packages() -> Vec<String>{
+fn default_packages() -> Vec<String> {
     vec![String::from("whatplatformis")]
 }
 
@@ -18,7 +18,7 @@ struct Config {
     #[serde(default = "default_packages")]
     pub packages: Vec<String>,
     #[serde(default = "default_target")]
-    pub target: String
+    pub target: String,
 }
 
 /// An example plugin function with macro support.
@@ -46,10 +46,7 @@ pub fn process_transform(program: Program, metadata: TransformPluginProgramMetad
     .expect("Should provide plugin config");
     let packages = plugin_config.packages;
     let target = plugin_config.target;
-    let config = WhatPlatformConfig {
-        target,
-        packages,
-    };
+    let config = WhatPlatformConfig { target, packages };
     let mut whatplatform = whatplatform(config);
     program.fold_with(&mut whatplatform)
 }

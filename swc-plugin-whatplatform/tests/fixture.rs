@@ -11,10 +11,12 @@ fn fixture_server(input: PathBuf) {
 
     test_fixture(
         Default::default(),
-        &|_| whatplatform(WhatPlatformConfig {
-          target: String::from("server"),
-          packages: vec![String::from("whatplatformis")]
-        }),
+        &|_| {
+            whatplatform(WhatPlatformConfig {
+                target: String::from("server"),
+                packages: vec![String::from("whatplatformis")],
+            })
+        },
         &input,
         &output,
         Default::default(),
@@ -27,10 +29,12 @@ fn fixture_browser(input: PathBuf) {
 
     test_fixture(
         Default::default(),
-        &|_| whatplatform(WhatPlatformConfig {
-          target: String::from("browser"),
-          packages: vec![String::from("whatplatformis")]
-        }),
+        &|_| {
+            whatplatform(WhatPlatformConfig {
+                target: String::from("browser"),
+                packages: vec![String::from("whatplatformis")],
+            })
+        },
         &input,
         &output,
         Default::default(),
@@ -43,10 +47,12 @@ fn fixture_custom(input: PathBuf) {
 
     test_fixture(
         Default::default(),
-        &|_| whatplatform(WhatPlatformConfig {
-          target: String::from("browser"),
-          packages: vec![String::from("is-server")]
-        }),
+        &|_| {
+            whatplatform(WhatPlatformConfig {
+                target: String::from("browser"),
+                packages: vec![String::from("is-server")],
+            })
+        },
         &input,
         &output,
         Default::default(),
