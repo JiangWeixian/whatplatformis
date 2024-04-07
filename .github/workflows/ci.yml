@@ -16,7 +16,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: nightly
+          toolchain: nightly-2023-07-03
           components: rustfmt, clippy
       - name: Run cargo check
         run:
@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        rust: [nightly]
+        rust: [nightly-2023-07-03]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout sources
