@@ -43,6 +43,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
+          toolchain: nightly-2023-07-03
       - name: install wasm target
         shell: bash
         run: |
