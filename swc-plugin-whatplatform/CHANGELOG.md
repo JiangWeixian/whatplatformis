@@ -1,5 +1,11 @@
 # swc-plugin-whatplatformis
 
+## 0.1.1
+
+### Patch Changes
+
+- 58b2435: swc/core as peer
+
 ## 0.1.0
 
 ### Minor Changes
