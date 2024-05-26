@@ -1,5 +1,11 @@
 # swc-plugin-whatplatformis
 
+## 0.2.0
+
+### Minor Changes
+
+- a05c854: support server fns, replace dynamic platform fn check into bool
+
 ## 0.1.1
 
 ### Patch Changes
