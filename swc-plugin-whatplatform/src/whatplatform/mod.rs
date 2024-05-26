@@ -25,10 +25,10 @@ pub struct WhatPlatformConfig {
 impl WhatPlatform {
     fn is_server_fn(&self, ident: &Ident) -> bool {
         return self.is_server_fns.iter().any(|f| {
-            if ident.sym.to_string() == *f {
+            if ident.sym == f.clone() {
                 return true;
             }
-            return false;
+            false
         });
     }
     fn has_condition_call(&self, expr: &Expr) -> bool {
@@ -45,11 +45,11 @@ impl WhatPlatform {
         if let Expr::OptChain(call) = expr {
             if let box OptChainBase::Call(optcall) = &call.base {
                 if let box Expr::Ident(ident) = &optcall.callee {
-                    return self.is_server_fn(&ident);
+                    return self.is_server_fn(ident);
                 }
             }
         }
-        return false;
+        false
     }
 }
 

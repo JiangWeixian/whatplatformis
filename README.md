@@ -125,6 +125,12 @@ Control replace `isBrowser | isServer` into `false | true`
 
 Sometimes you maintain similar packages like `whatplatformis`, e.g. `is-server`, you can defined extra packages
 
+```json
+{ "target": "server", "packages": ["whatplatformis", "is-server"] }
+```
+
+Plugin will also replace `isServer` and `isBrowser` from packages `whatplatformis` and `is-server`
+
 `options.isServerFns`
 
 - `type: string[]`
@@ -133,13 +139,6 @@ Sometimes you maintain similar packages like `whatplatformis`, e.g. `is-server`,
 `serverFns` ignore packages config, will not check where imported from, any package's `isServreFns` will be replaced into boolean.
 
 Replace runtime `isSSR()` or `isSSR?.()` or `namespace.isSSR()` into `true` or `false` based on `options.target`.
-
-
-```json
-{ "target": "server", "packages": ["whatplatformis", "is-server"] }
-```
-
-Plugin will also replace `isServer` and `isBrowser` from packages `whatplatformis` and `is-server`
 
 
 ## `FAQ`
