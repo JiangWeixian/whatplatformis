@@ -1,6 +1,9 @@
-use swc_core::ecma::{
-    ast::*,
-    visit::{Fold, FoldWith},
+use swc_core::{
+    common::DUMMY_SP,
+    ecma::{
+        ast::*,
+        visit::{Fold, FoldWith},
+    },
 };
 use tracing::debug;
 
@@ -10,11 +13,44 @@ pub struct WhatPlatform {
     is_browser_ident: Option<Id>,
     target: String,
     packages: Vec<String>,
+    is_server_fns: Vec<String>,
 }
 
 pub struct WhatPlatformConfig {
     pub target: String,
     pub packages: Vec<String>,
+    pub is_server_fns: Vec<String>,
+}
+
+impl WhatPlatform {
+    fn is_server_fn(&self, ident: &Ident) -> bool {
+        return self.is_server_fns.iter().any(|f| {
+            if ident.sym == f.clone() {
+                return true;
+            }
+            false
+        });
+    }
+    fn has_condition_call(&self, expr: &Expr) -> bool {
+        if let Expr::Call(call) = expr {
+            if let Callee::Expr(box Expr::Ident(ident)) = &call.callee {
+                return self.is_server_fn(ident);
+            }
+            if let Callee::Expr(box Expr::Member(mem)) = &call.callee {
+                if let MemberProp::Ident(ident) = &mem.prop {
+                    return self.is_server_fn(ident);
+                }
+            }
+        }
+        if let Expr::OptChain(call) = expr {
+            if let box OptChainBase::Call(optcall) = &call.base {
+                if let box Expr::Ident(ident) = &optcall.callee {
+                    return self.is_server_fn(ident);
+                }
+            }
+        }
+        false
+    }
 }
 
 impl Fold for WhatPlatform {
@@ -52,6 +88,54 @@ impl Fold for WhatPlatform {
         new_items
     }
 
+    fn fold_expr(&mut self, n: Expr) -> Expr {
+        if self.has_condition_call(&n) {
+            return Expr::Lit(Lit::Bool(Bool {
+                span: DUMMY_SP,
+                value: self.target.as_str() == "server",
+            }));
+        }
+        n.fold_children_with(self)
+    }
+
+    fn fold_bin_expr(&mut self, n: BinExpr) -> BinExpr {
+        if self.has_condition_call(&n.left) {
+            return BinExpr {
+                left: Box::new(Expr::Lit(Lit::Bool(Bool {
+                    span: DUMMY_SP,
+                    value: self.target.as_str() == "server",
+                }))),
+                ..n
+            };
+        }
+        if self.has_condition_call(&n.right) {
+            return BinExpr {
+                right: Box::new(Expr::Lit(Lit::Bool(Bool {
+                    span: DUMMY_SP,
+                    value: self.target.as_str() == "server",
+                }))),
+                ..n
+            };
+        }
+        n.fold_children_with(self)
+    }
+
+    // const x = isSSR();
+    fn fold_var_declarator(&mut self, n: VarDeclarator) -> VarDeclarator {
+        if let Some(box init) = &n.init {
+            if self.has_condition_call(init) {
+                return VarDeclarator {
+                    init: Some(Box::new(Expr::Lit(Lit::Bool(Bool {
+                        span: DUMMY_SP,
+                        value: self.target.as_str() == "server",
+                    })))),
+                    ..n
+                };
+            }
+        }
+        n.fold_children_with(self)
+    }
+
     fn fold_ident(&mut self, n: Ident) -> Ident {
         if let Some(is_server) = &self.is_server_ident {
             if &n.to_id() == is_server {
@@ -81,6 +165,7 @@ pub fn whatplatform(config: WhatPlatformConfig) -> impl Fold {
     WhatPlatform {
         target: config.target,
         packages: config.packages,
+        is_server_fns: config.is_server_fns,
         ..Default::default()
     }
 }

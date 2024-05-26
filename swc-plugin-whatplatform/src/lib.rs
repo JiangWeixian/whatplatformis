@@ -1,3 +1,4 @@
+#![feature(box_patterns)]
 pub mod whatplatform;
 
 use serde::Deserialize;
@@ -13,12 +14,19 @@ fn default_target() -> String {
     String::from("server")
 }
 
+fn default_fns() -> Vec<String> {
+    vec![]
+}
+
 #[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct Config {
     #[serde(default = "default_packages")]
     pub packages: Vec<String>,
     #[serde(default = "default_target")]
     pub target: String,
+    #[serde(default = "default_fns")]
+    pub is_server_fns: Vec<String>,
 }
 
 /// An example plugin function with macro support.
@@ -46,7 +54,12 @@ pub fn process_transform(program: Program, metadata: TransformPluginProgramMetad
     .expect("Should provide plugin config");
     let packages = plugin_config.packages;
     let target = plugin_config.target;
-    let config = WhatPlatformConfig { target, packages };
+    let is_server_fns = plugin_config.is_server_fns;
+    let config = WhatPlatformConfig {
+        target,
+        packages,
+        is_server_fns,
+    };
     let mut whatplatform = whatplatform(config);
     program.fold_with(&mut whatplatform)
 }
