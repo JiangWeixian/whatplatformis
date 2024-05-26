@@ -72,7 +72,16 @@ add this plugin in `.swcrc` or `swc-loader` options
 {
   "jsc": {
     "experimental": {
-      "plugins": [["swc-plugin-whatplatformis", { "target": "server", "packages": ["whatplatformis"] }]]
+      "plugins": [
+        [
+          "swc-plugin-whatplatformis",
+          {
+            "target": "server",
+            "packages": ["whatplatformis"],
+            "isServerFns": []
+          }
+        ]
+      ]
     }
   }
 }
@@ -115,6 +124,16 @@ Control replace `isBrowser | isServer` into `false | true`
 - `type: string[]`
 
 Sometimes you maintain similar packages like `whatplatformis`, e.g. `is-server`, you can defined extra packages
+
+`options.isServerFns`
+
+- `type: string[]`
+
+> [!WARNING]  
+`serverFns` ignore packages config, will not check where imported from, any package's `isServreFns` will be replaced into boolean.
+
+Replace runtime `isSSR()` or `isSSR?.()` or `namespace.isSSR()` into `true` or `false` based on `options.target`.
+
 
 ```json
 { "target": "server", "packages": ["whatplatformis", "is-server"] }
