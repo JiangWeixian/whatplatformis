@@ -14,6 +14,6 @@
     "build": "cargo build-wasi --release && cp ../target/wasm32-wasi/release/swc_plugin_whatplatformis.wasm ."
   },
   "peerDependencies": {
-    "@swc/core": "^1.4.0"
+    "@swc/core": "^1.7.10"
   }
 }
