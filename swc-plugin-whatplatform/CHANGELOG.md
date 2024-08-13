@@ -1,5 +1,11 @@
 # swc-plugin-whatplatformis
 
+## 0.3.0
+
+### Minor Changes
+
+- 1fb2aff: upgrade swc_core@0.99.x
+
 ## 0.2.0
 
 ### Minor Changes
