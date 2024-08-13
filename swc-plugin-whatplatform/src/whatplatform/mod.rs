@@ -1,4 +1,5 @@
 use swc_core::{
+    atoms::Atom,
     common::DUMMY_SP,
     ecma::{
         ast::*,
@@ -23,9 +24,9 @@ pub struct WhatPlatformConfig {
 }
 
 impl WhatPlatform {
-    fn is_server_fn(&self, ident: &Ident) -> bool {
+    fn is_server_fn(&self, ident: Atom) -> bool {
         return self.is_server_fns.iter().any(|f| {
-            if ident.sym == f.clone() {
+            if ident == f.clone() {
                 return true;
             }
             false
@@ -34,18 +35,18 @@ impl WhatPlatform {
     fn has_condition_call(&self, expr: &Expr) -> bool {
         if let Expr::Call(call) = expr {
             if let Callee::Expr(box Expr::Ident(ident)) = &call.callee {
-                return self.is_server_fn(ident);
+                return self.is_server_fn(ident.sym.clone());
             }
             if let Callee::Expr(box Expr::Member(mem)) = &call.callee {
                 if let MemberProp::Ident(ident) = &mem.prop {
-                    return self.is_server_fn(ident);
+                    return self.is_server_fn(ident.sym.clone());
                 }
             }
         }
         if let Expr::OptChain(call) = expr {
             if let box OptChainBase::Call(optcall) = &call.base {
                 if let box Expr::Ident(ident) = &optcall.callee {
-                    return self.is_server_fn(ident);
+                    return self.is_server_fn(ident.sym.clone());
                 }
             }
         }
@@ -144,7 +145,7 @@ impl Fold for WhatPlatform {
                     _ => "false",
                 };
                 debug!("target: {:#?}", server);
-                return Ident::new(server.into(), n.span);
+                return Ident::new(server.into(), n.span, Default::default());
             }
         }
         if let Some(is_browser) = &self.is_browser_ident {
@@ -154,7 +155,7 @@ impl Fold for WhatPlatform {
                     _ => "false",
                 };
                 debug!("target: {:#?}", browser);
-                return Ident::new(browser.into(), n.span);
+                return Ident::new(browser.into(), n.span, Default::default());
             }
         }
         n
